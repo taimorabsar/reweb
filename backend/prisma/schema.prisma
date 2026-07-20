@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  VILLA
+  PLOT
+  COMMERCIAL
+}
+
+enum PropertyStatus {
+  ACTIVE
+  SOLD
+  RENTED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  phone        String?
+  role         UserRole   @default(USER)
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  properties      Property[]
+  sentInquiries   Inquiry[] @relation("InquirySender")
+  sentReplies     Reply[]   @relation("ReplySender")
+  refreshToken    RefreshToken?
+
+  @@map("users")
+}
+
+model Property {
+  id           String       @id @default(uuid())
+  userId       String       @map("user_id")
+  title        String
+  description  String
+  price        Float
+  city         String
+  locality     String
+  propertyType PropertyType @map("property_type")
+  bedrooms     Int
+  bathrooms    Int
+  areaSqFt     Float        @map("area_sqft")
+  images       String[]
+  status       PropertyStatus @default(ACTIVE)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inquiries    Inquiry[]    @relation("InquiryProperty")
+
+  @@index([city])
+  @@index([propertyType])
+  @@index([price])
+  @@index([bedrooms])
+  @@index([city, propertyType, price, bedrooms])
+  @@index([userId])
+  @@index([status])
+  @@map("properties")
+}
+
+model Inquiry {
+  id         String   @id @default(uuid())
+  propertyId String   @map("property_id")
+  senderId   String   @map("sender_id")
+  message    String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  property     Property @relation("InquiryProperty", fields: [propertyId], references: [id], onDelete: Cascade)
+  sender       User     @relation("InquirySender", fields: [senderId], references: [id], onDelete: Cascade)
+  replies      Reply[]
+
+  @@unique([propertyId, senderId])
+  @@index([propertyId])
+  @@index([senderId])
+  @@map("inquiries")
+}
+
+model Reply {
+  id        String   @id @default(uuid())
+  inquiryId String   @map("inquiry_id")
+  senderId  String   @map("sender_id")
+  message   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  inquiry Inquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  sender  User    @relation("ReplySender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([inquiryId])
+  @@index([senderId])
+  @@map("replies")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String   @unique @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@map("refresh_tokens")
+}
