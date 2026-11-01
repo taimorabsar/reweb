@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { Property } from "@/types";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
-import { formatPrice, formatArea, formatDate, getPropertyTypeLabel } from "@/lib/utils";
+import { formatPrice, formatArea, formatDate, getPropertyTypeLabel, getPurposeLabel } from "@/lib/utils";
 import PropertyCard from "@/components/PropertyCard";
 import InquiryForm from "@/components/InquiryForm";
 import PropertyStats from "@/components/PropertyStats";
@@ -110,7 +110,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
   };
 
   const summary: [string, string][] = [
-    ["Property type", getPropertyTypeLabel(property.propertyType)],
+    ["Property type", getPropertyTypeLabel(property.propertyType)], ["Listing type", getPurposeLabel(property.purpose)], ...(property.isInvestment ? [["Investment", "Yes"] as [string, string]] : []),
     ["Area", formatArea(property.areaSqFt)],
     ...(property.bedrooms > 0 ? [["Bedrooms", String(property.bedrooms)] as [string, string]] : []),
     ...(property.bathrooms > 0 ? [["Bathrooms", String(property.bathrooms)] as [string, string]] : []),
@@ -179,7 +179,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
               </div>
             )}
             <span className="absolute top-3 left-3 bg-primary-700 text-white text-sm font-semibold px-3 py-1.5 rounded-full pointer-events-none">
-              {getPropertyTypeLabel(property.propertyType)}
+              {getPropertyTypeLabel(property.propertyType)} · {getPurposeLabel(property.purpose)}
             </span>
           </div>
 
@@ -224,7 +224,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                       {property.status}
                     </span>
                   )}
-                  <TimeAgo date={property.createdAt} prefix="Posted " />
+                  {property.purpose === "RENT" && <span className="font-medium text-gray-700">Rent per month</span>}<TimeAgo date={property.createdAt} prefix="Posted " />
                 </div>
               </div>
               <PropertyStats

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Property } from "@/types";
-import { formatPrice, getPropertyTypeLabel } from "@/lib/utils";
+import { formatPrice, getPropertyTypeLabel, getPurposeLabel } from "@/lib/utils";
 import PropertyStats from "@/components/PropertyStats";
 import TimeAgo from "@/components/TimeAgo";
 
@@ -12,6 +12,7 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   const mainImage = property.images[0] || "/placeholder-property.jpg";
+  const isRent = property.purpose === "RENT";
 
   return (
     <Link href={`/properties/${property.id}`}>
@@ -22,9 +23,12 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 flex gap-2">
             <span className="bg-primary-700 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
               {getPropertyTypeLabel(property.propertyType)}
+            </span>
+            <span className="bg-white text-primary-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+              {getPurposeLabel(property.purpose)}
             </span>
           </div>
           {property.status !== "ACTIVE" && (
@@ -34,11 +38,19 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               </span>
             </div>
           )}
+          {property.isInvestment && (
+            <div className="absolute bottom-3 left-3">
+              <span className="bg-accent-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                Investment
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="p-4">
           <p className="text-2xl font-extrabold text-primary-700">
             {formatPrice(property.price)}
+            {isRent && <span className="text-sm font-medium text-gray-500"> / month</span>}
           </p>
           <h3 className="text-base font-semibold text-gray-900 truncate mt-1 group-hover:text-primary-600 transition-colors">
             {property.title}

@@ -1,15 +1,22 @@
+export type AccountType = "OWNER" | "AGENT" | "AGENCY";
+export type PropertyType = "APARTMENT" | "HOUSE" | "VILLA" | "PLOT" | "COMMERCIAL";
+export type PropertyStatus = "ACTIVE" | "SOLD" | "RENTED";
+export type ListingPurpose = "SALE" | "RENT";
+export type Furnishing = "FURNISHED" | "SEMI_FURNISHED" | "UNFURNISHED";
+export type Possession = "READY" | "UNDER_CONSTRUCTION";
+
 export interface User {
   id: string;
   name: string;
   email: string;
   phone?: string | null;
   role: "USER" | "ADMIN";
+  accountType?: AccountType;
+  agencyName?: string | null;
+  avatarUrl?: string | null;
   createdAt: string;
   _count?: { properties: number };
 }
-
-export type PropertyType = "APARTMENT" | "HOUSE" | "VILLA" | "PLOT" | "COMMERCIAL";
-export type PropertyStatus = "ACTIVE" | "SOLD" | "RENTED";
 
 export interface Property {
   id: string;
@@ -20,14 +27,22 @@ export interface Property {
   city: string;
   locality: string;
   propertyType: PropertyType;
+  purpose?: ListingPurpose;
+  isInvestment?: boolean;
   bedrooms: number;
   bathrooms: number;
   areaSqFt: number;
+  yearBuilt?: number | null;
+  floors?: number | null;
+  parkingSpaces?: number | null;
+  furnishing?: Furnishing | null;
+  possession?: Possession | null;
+  features?: string[];
   images: string[];
   status: PropertyStatus;
   createdAt: string;
   updatedAt: string;
-  user: Pick<User, "id" | "name" | "email" | "phone">;
+  user: Pick<User, "id" | "name" | "email" | "phone" | "accountType" | "agencyName" | "avatarUrl">;
 }
 
 export interface Reply {
@@ -79,6 +94,9 @@ export interface PropertySearchParams {
   city?: string;
   locality?: string;
   propertyType?: PropertyType;
+  purpose?: ListingPurpose;
+  investment?: "true";
+  sellerType?: AccountType;
   minPrice?: number;
   maxPrice?: number;
   bedrooms?: number;

@@ -47,3 +47,7 @@ export function timeAgo(dateString: string): string {
   if (weeks < 5) return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
   return formatDate(dateString);
 }
+
+export function getPurposeLabel(purpose?: string): string {
+  return purpose === "RENT" ? "For Rent" : "For Sale";
+}
