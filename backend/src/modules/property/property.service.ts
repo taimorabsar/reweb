@@ -8,7 +8,7 @@ const PROPERTY_INCLUDE = {
       id: true,
       name: true,
       email: true,
-      phone: true,
+      phone: true, accountType: true, agencyName: true, avatarUrl: true,
     },
   },
 };
@@ -73,7 +73,7 @@ export async function deleteProperty(id: string, userId: string) {
 }
 
 export async function searchProperties(query: PropertyQueryInput) {
-  const { city, locality, propertyType, minPrice, maxPrice, bedrooms, status, sort, cursor, limit } = query;
+  const { city, locality, propertyType, minPrice, maxPrice, bedrooms, status, sort, cursor, limit, purpose, investment, sellerType } = query;
 
   const where: Record<string, unknown> = {};
 
@@ -91,7 +91,7 @@ export async function searchProperties(query: PropertyQueryInput) {
     if (minPrice !== undefined) (where.price as Record<string, number>).gte = minPrice;
     if (maxPrice !== undefined) (where.price as Record<string, number>).lte = maxPrice;
   }
-  if (bedrooms !== undefined) {
+  if (purpose) { where.purpose = purpose; } if (investment === "true") { where.isInvestment = true; } if (sellerType) { where.user = { accountType: sellerType }; } if (bedrooms !== undefined) {
     where.bedrooms = bedrooms;
   }
   if (status) {

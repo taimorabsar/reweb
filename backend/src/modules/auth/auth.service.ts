@@ -4,7 +4,7 @@ import prisma from "../../config/database";
 import { env } from "../../config/env";
 import { ConflictError, UnauthorizedError, NotFoundError } from "../../utils/errors";
 import { AuthPayload } from "../../middleware/auth";
-import { RegisterInput, LoginInput } from "./auth.validation";
+import { RegisterInput, LoginInput, UpdateProfileInput } from "./auth.validation";
 
 const SALT_ROUNDS = 12;
 
@@ -53,13 +53,13 @@ export async function register(data: RegisterInput) {
       name: data.name,
       email: data.email,
       passwordHash,
-      phone: data.phone,
+      phone: data.phone, accountType: data.accountType, agencyName: data.agencyName,
     },
     select: {
       id: true,
       name: true,
       email: true,
-      phone: true,
+      phone: true, accountType: true, agencyName: true, avatarUrl: true,
       role: true,
       createdAt: true,
     },
@@ -127,7 +127,7 @@ export async function login(data: LoginInput) {
       id: user.id,
       name: user.name,
       email: user.email,
-      phone: user.phone,
+      phone: user.phone, accountType: user.accountType, agencyName: user.agencyName, avatarUrl: user.avatarUrl,
       role: user.role,
       createdAt: user.createdAt,
     },
@@ -198,7 +198,7 @@ export async function getProfile(userId: string) {
       id: true,
       name: true,
       email: true,
-      phone: true,
+      phone: true, accountType: true, agencyName: true, avatarUrl: true,
       role: true,
       createdAt: true,
       _count: { select: { properties: true } },
@@ -210,4 +210,22 @@ export async function getProfile(userId: string) {
   }
 
   return user;
+}
+
+export async function updateProfile(userId: string, data: UpdateProfileInput) {
+  return prisma.user.update({
+    where: { id: userId },
+    data,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      role: true,
+      accountType: true,
+      agencyName: true,
+      avatarUrl: true,
+      createdAt: true,
+    },
+  });
 }

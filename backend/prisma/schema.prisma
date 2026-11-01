@@ -12,6 +12,12 @@ enum UserRole {
   ADMIN
 }
 
+enum AccountType {
+  OWNER
+  AGENT
+  AGENCY
+}
+
 enum PropertyType {
   APARTMENT
   HOUSE
@@ -26,15 +32,34 @@ enum PropertyStatus {
   RENTED
 }
 
+enum ListingPurpose {
+  SALE
+  RENT
+}
+
+enum Furnishing {
+  FURNISHED
+  SEMI_FURNISHED
+  UNFURNISHED
+}
+
+enum Possession {
+  READY
+  UNDER_CONSTRUCTION
+}
+
 model User {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
-  email        String     @unique
-  passwordHash String     @map("password_hash")
+  email        String      @unique
+  passwordHash String      @map("password_hash")
   phone        String?
-  role         UserRole   @default(USER)
-  createdAt    DateTime   @default(now()) @map("created_at")
-  updatedAt    DateTime   @updatedAt @map("updated_at")
+  role         UserRole    @default(USER)
+  accountType  AccountType @default(OWNER) @map("account_type")
+  agencyName   String?     @map("agency_name")
+  avatarUrl    String?     @map("avatar_url")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
   properties      Property[]
   sentInquiries   Inquiry[] @relation("InquirySender")
@@ -45,21 +70,29 @@ model User {
 }
 
 model Property {
-  id           String       @id @default(uuid())
-  userId       String       @map("user_id")
-  title        String
-  description  String
-  price        Float
-  city         String
-  locality     String
-  propertyType PropertyType @map("property_type")
-  bedrooms     Int
-  bathrooms    Int
-  areaSqFt     Float        @map("area_sqft")
-  images       String[]
-  status       PropertyStatus @default(ACTIVE)
-  createdAt    DateTime     @default(now()) @map("created_at")
-  updatedAt    DateTime     @updatedAt @map("updated_at")
+  id            String         @id @default(uuid())
+  userId        String         @map("user_id")
+  title         String
+  description   String
+  price         Float
+  city          String
+  locality      String
+  propertyType  PropertyType   @map("property_type")
+  purpose       ListingPurpose @default(SALE)
+  isInvestment  Boolean        @default(false) @map("is_investment")
+  bedrooms      Int
+  bathrooms     Int
+  areaSqFt      Float          @map("area_sqft")
+  yearBuilt     Int?           @map("year_built")
+  floors        Int?
+  parkingSpaces Int?           @map("parking_spaces")
+  furnishing    Furnishing?
+  possession    Possession?
+  features      String[]       @default([])
+  images        String[]
+  status        PropertyStatus @default(ACTIVE)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   inquiries    Inquiry[]    @relation("InquiryProperty")
@@ -71,6 +104,7 @@ model Property {
   @@index([city, propertyType, price, bedrooms])
   @@index([userId])
   @@index([status])
+  @@index([purpose])
   @@map("properties")
 }
 

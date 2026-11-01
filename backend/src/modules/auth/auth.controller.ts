@@ -46,3 +46,12 @@ export async function logout(req: Request, res: Response, next: NextFunction): P
     next(error);
   }
 }
+
+export async function updateProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const result = await authService.updateProfile(req.user!.userId, req.body);
+    sendSuccess(res, result, "Profile updated successfully");
+  } catch (error) {
+    next(error);
+  }
+}
