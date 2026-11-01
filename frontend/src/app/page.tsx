@@ -23,7 +23,7 @@ export default function HomePage() {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [city, setCity] = useState("");
-  const [propertyType, setPropertyType] = useState("");
+  const [propertyType, setPropertyType] = useState(""); const [mode, setMode] = useState<"buy" | "rent" | "invest">("buy");
 
   useEffect(() => {
     async function loadFeatured() {
@@ -43,7 +43,7 @@ export default function HomePage() {
     e.preventDefault();
     const params = new URLSearchParams();
     if (city.trim()) params.set("city", city.trim());
-    if (propertyType) params.set("propertyType", propertyType);
+    if (propertyType) params.set("propertyType", propertyType); if (mode === "buy") params.set("purpose", "SALE"); if (mode === "rent") params.set("purpose", "RENT"); if (mode === "invest") params.set("investment", "true"); if (mode === "buy") params.set("purpose", "SALE"); if (mode === "rent") params.set("purpose", "RENT"); if (mode === "invest") params.set("investment", "true");
     const query = params.toString();
     router.push(query ? `/properties?${query}` : "/properties");
   };
@@ -65,9 +65,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          <form
+          <div className="mt-10 flex max-w-4xl" role="tablist">{([["buy", "Buy"], ["rent", "Rent"], ["invest", "Invest"]] as const).map(([k, label]) => (<button key={k} type="button" role="tab" aria-selected={mode === k} onClick={() => setMode(k)} className={`rounded-t-xl px-6 py-2.5 text-sm font-semibold transition-colors ${mode === k ? "bg-white text-primary-700" : "bg-primary-900/50 text-primary-100 hover:bg-primary-900/70"}`}>{label}</button>))}</div><form
             onSubmit={handleSearch}
-            className="mt-10 bg-white rounded-2xl p-4 md:p-5 shadow-xl max-w-4xl flex flex-col md:flex-row gap-3"
+            className="bg-white rounded-b-2xl rounded-tr-2xl p-4 md:p-5 shadow-xl max-w-4xl flex flex-col md:flex-row gap-3"
           >
             <div className="flex-1">
               <label htmlFor="hero-city" className="sr-only">
