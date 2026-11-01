@@ -83,7 +83,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             offers: {
               "@type": "Offer",
               price: property.price,
-              priceCurrency: "INR",
+              priceCurrency: "PKR",
             },
           }),
         }}

@@ -176,7 +176,7 @@ export default function NewPropertyPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price (INR) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price (PKR) *</label>
               <input
                 type="number"
                 value={form.price}

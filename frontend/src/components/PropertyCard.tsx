@@ -21,13 +21,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-3 left-3">
-            <span className="bg-primary-600 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+            <span className="bg-primary-700 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
               {getPropertyTypeLabel(property.propertyType)}
             </span>
           </div>
           {property.status !== "ACTIVE" && (
             <div className="absolute top-3 right-3">
-              <span className="bg-orange-500 text-white text-xs font-medium px-2.5 py-1 rounded-full">
+              <span className="bg-accent-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                 {property.status}
               </span>
             </div>
@@ -43,14 +43,16 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </p>
 
           <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
+            {property.bedrooms > 0 && (
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                {property.bedrooms} Bed
+              </span>
+            )}
             <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-              </svg>
-              {property.bedrooms} BHK
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
               </svg>
               {formatArea(property.areaSqFt)}
@@ -58,12 +60,14 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
 
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-            <span className="text-xl font-bold text-primary-600">
+            <span className="text-xl font-extrabold text-primary-700">
               {formatPrice(property.price)}
             </span>
-            <span className="text-xs text-gray-400">
-              {property.bathrooms} Bath
-            </span>
+            {property.bathrooms > 0 && (
+              <span className="text-xs text-gray-500">
+                {property.bathrooms} Bath
+              </span>
+            )}
           </div>
         </div>
       </div>

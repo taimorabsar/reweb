@@ -125,7 +125,7 @@ export default function SearchFilters({ onSearch, initialParams = {} }: SearchFi
           <label className="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
           <input
             type="number"
-            placeholder="Min"
+            placeholder="Min (PKR)"
             value={filters.minPrice || ""}
             onChange={(e) => updateFilter("minPrice", e.target.value ? Number(e.target.value) : undefined)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
@@ -136,7 +136,7 @@ export default function SearchFilters({ onSearch, initialParams = {} }: SearchFi
           <label className="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
           <input
             type="number"
-            placeholder="Max"
+            placeholder="Max (PKR)"
             value={filters.maxPrice || ""}
             onChange={(e) => updateFilter("maxPrice", e.target.value ? Number(e.target.value) : undefined)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
@@ -162,7 +162,7 @@ export default function SearchFilters({ onSearch, initialParams = {} }: SearchFi
       <div className="flex items-center gap-3 mt-4">
         <button
           onClick={handleSearch}
-          className="bg-primary-600 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
+          className="btn-primary"
         >
           Search Properties
         </button>

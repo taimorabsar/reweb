@@ -1,15 +1,19 @@
+function trimZeros(n: string): string {
+  return n.replace(/\.?0+$/, "");
+}
+
 export function formatPrice(price: number): string {
   if (price >= 10000000) {
-    return `\u20B9${(price / 10000000).toFixed(2)} Cr`;
+    return `PKR ${trimZeros((price / 10000000).toFixed(2))} Crore`;
   }
   if (price >= 100000) {
-    return `\u20B9${(price / 100000).toFixed(2)} L`;
+    return `PKR ${trimZeros((price / 100000).toFixed(2))} Lakh`;
   }
-  return `\u20B9${price.toLocaleString("en-IN")}`;
+  return `PKR ${price.toLocaleString("en-PK")}`;
 }
 
 export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-IN", {
+  return new Date(dateString).toLocaleDateString("en-PK", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -17,7 +21,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function formatArea(area: number): string {
-  return `${area.toLocaleString("en-IN")} sq.ft.`;
+  return `${area.toLocaleString("en-PK")} sq ft`;
 }
 
 export function getPropertyTypeLabel(type: string): string {

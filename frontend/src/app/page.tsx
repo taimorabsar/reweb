@@ -57,7 +57,7 @@ export default function HomePage() {
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
               Find your next home{" "}
-              <span className="text-accent-300">across Pakistan</span>
+              <span className="text-accent-300 whitespace-nowrap">across Pakistan</span>
             </h1>
             <p className="mt-5 text-lg text-primary-100 max-w-xl">
               Browse houses, plots and commercial space, and contact the agent or
