@@ -61,7 +61,7 @@ export default function InquiryForm({ propertyId, ownerName }: InquiryFormProps)
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-1">Contact {ownerName}</h3>
-      <p className="text-sm text-gray-500 mb-4">Send a message to the property owner</p>
+      <p className="text-sm text-gray-500 mb-4">Send a message about this property</p>
 
       {!user ? (
         <p className="text-sm text-gray-500 text-center py-4">
@@ -83,7 +83,7 @@ export default function InquiryForm({ propertyId, ownerName }: InquiryFormProps)
           <button
             type="submit"
             disabled={loading || message.trim().length < 10}
-            className="w-full bg-primary-600 text-white py-2.5 rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="btn-primary w-full"
           >
             {loading ? "Sending..." : "Send Inquiry"}
           </button>
