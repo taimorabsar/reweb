@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
-const inter = Inter({ subsets: ["latin"] });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -11,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | RealEstate",
   },
   description:
-    "Find your dream property from thousands of verified listings across India. Search apartments, houses, villas, plots, and commercial properties.",
+    "Find your dream property from thousands of verified listings across Pakistan. Search apartments, houses, villas, plots, and commercial properties.",
   keywords: [
     "real estate",
     "property",
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    locale: "en_IN",
+    locale: "en_PK",
     siteName: "RealEstate",
   },
 };
@@ -31,7 +34,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jakarta.className}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
