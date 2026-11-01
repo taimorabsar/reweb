@@ -8,6 +8,13 @@ import PropertyCard from "@/components/PropertyCard";
 import PropertyCardSkeleton from "@/components/PropertyCardSkeleton";
 import SearchFilters from "@/components/SearchFilters";
 
+const SORT_OPTIONS = [
+  { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "price_asc", label: "Lowest price" },
+  { value: "price_desc", label: "Highest price" },
+];
+
 function PropertiesContent() {
   const searchParams = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
@@ -47,6 +54,11 @@ function PropertiesContent() {
     if (city) initialParams.city = city;
     const type = searchParams.get("propertyType");
     if (type) initialParams.propertyType = type as Property["propertyType"];
+    const purpose = searchParams.get("purpose");
+    if (purpose === "SALE" || purpose === "RENT") initialParams.purpose = purpose;
+    if (searchParams.get("investment") === "true") initialParams.investment = "true";
+    const sort = searchParams.get("sort");
+    if (sort) initialParams.sort = sort;
     setCurrentParams(initialParams);
     loadProperties(initialParams);
   }, [searchParams, loadProperties]);
@@ -54,6 +66,10 @@ function PropertiesContent() {
   const handleSearch = (params: PropertySearchParams) => {
     setCurrentParams(params);
     loadProperties(params);
+  };
+
+  const handleSortChange = (sort: string) => {
+    handleSearch({ ...currentParams, sort });
   };
 
   const loadMore = () => {
@@ -66,14 +82,34 @@ function PropertiesContent() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Properties</h1>
-        <p className="text-gray-500 mt-1">
-          {total > 0 ? `${total} properties found` : "Searching properties..."}
-        </p>
       </div>
 
       <SearchFilters key={JSON.stringify(currentParams)} onSearch={handleSearch} initialParams={currentParams} />
 
-      <div className="mt-8">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-lg font-semibold text-gray-900">
+          Results: {loading ? "..." : `${total.toLocaleString("en-PK")} ${total === 1 ? "Listing" : "Listings"}`}
+        </p>
+        <div className="flex items-center gap-2">
+          <label htmlFor="sort-by" className="text-sm font-medium text-gray-700">
+            Sort By
+          </label>
+          <select
+            id="sort-by"
+            value={currentParams.sort || "newest"}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="mt-6">
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
