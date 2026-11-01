@@ -55,7 +55,7 @@ function PropertiesContent() {
     const type = searchParams.get("propertyType");
     if (type) initialParams.propertyType = type as Property["propertyType"];
     const purpose = searchParams.get("purpose");
-    if (purpose === "SALE" || purpose === "RENT") initialParams.purpose = purpose;
+    initialParams.purpose = purpose === "RENT" ? "RENT" : "SALE";
     if (searchParams.get("investment") === "true") initialParams.investment = "true";
     const sort = searchParams.get("sort");
     if (sort) initialParams.sort = sort;

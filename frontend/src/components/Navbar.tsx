@@ -4,6 +4,13 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { useState } from "react";
 
+const NAV_LINKS = [
+  { href: "/properties?purpose=SALE", label: "Buy" },
+  { href: "/properties?purpose=RENT", label: "Rent" },
+  { href: "/properties?investment=true", label: "Invest" },
+  { href: "/properties", label: "Properties" },
+];
+
 export default function Navbar() {
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -30,12 +37,15 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              href="/properties"
-              className="text-gray-600 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              Properties
-            </Link>
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                className="text-gray-600 hover:text-primary-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                {l.label}
+              </Link>
+            ))}
             {user ? (
               <>
                 <Link
@@ -97,13 +107,16 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white">
           <div className="px-4 py-3 space-y-2">
-            <Link
-              href="/properties"
-              className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
-              onClick={() => setMobileOpen(false)}
-            >
-              Properties
-            </Link>
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.label}
+                href={l.href}
+                className="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg"
+                onClick={() => setMobileOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
             {user ? (
               <>
                 <Link
