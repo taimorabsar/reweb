@@ -14,10 +14,18 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">R</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900 hidden sm:block">RealEstate</span>
+              <svg className="w-9 h-9" viewBox="0 0 44 44" aria-hidden="true">
+                <rect width="44" height="44" rx="12" fill="#12284c" />
+                <path
+                  d="M12 24 L22 14 L32 24 M16 22 V32 H28 V22"
+                  fill="none"
+                  stroke="#ff8a65"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="text-xl font-extrabold text-primary-700 hidden sm:block">RealEstate</span>
             </Link>
           </div>
 
@@ -38,7 +46,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/dashboard/new"
-                  className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
+                  className="bg-accent-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent-700 transition-colors"
                 >
                   + Add Property
                 </Link>
@@ -73,6 +81,7 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden flex items-center p-2"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileOpen ? (
@@ -106,7 +115,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/dashboard/new"
-                  className="block px-3 py-2 text-primary-600 font-medium hover:bg-gray-50 rounded-lg"
+                  className="block px-3 py-2 text-accent-700 font-medium hover:bg-gray-50 rounded-lg"
                   onClick={() => setMobileOpen(false)}
                 >
                   + Add Property
