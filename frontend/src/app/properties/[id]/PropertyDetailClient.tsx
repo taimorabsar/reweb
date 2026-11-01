@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { Property } from "@/types";
+import { Property } from "@/types"; import { getFeatureLabel, FURNISHING_LABELS, POSSESSION_LABELS } from "@/lib/features";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { formatPrice, formatArea, formatDate, getPropertyTypeLabel, getPurposeLabel } from "@/lib/utils";
@@ -56,7 +56,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
     .map((part) => part[0])
     .join("")
     .toUpperCase();
-  const phone = property.user.phone || null;
+  const phone = property.user.phone || null; const buildingRows: [string, string][] = [...(property.yearBuilt ? [["Year built", String(property.yearBuilt)] as [string, string]] : []), ...(property.floors ? [["Floors", String(property.floors)] as [string, string]] : []), ...(property.parkingSpaces ? [["Parking spaces", String(property.parkingSpaces)] as [string, string]] : []), ...(property.furnishing ? [["Furnishing", FURNISHING_LABELS[property.furnishing] ?? property.furnishing] as [string, string]] : []), ...(property.possession ? [["Possession", POSSESSION_LABELS[property.possession] ?? property.possession] as [string, string]] : [])]; const features = property.features ?? [];
   const whatsappNumber = phone ? toWhatsAppNumber(phone) : null;
 
   useEffect(() => {
@@ -252,7 +252,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   <dd className="font-semibold text-gray-900">{value}</dd>
                 </div>
               ))}
-            </dl>
+            </dl>{buildingRows.length > 0 && (<div className="mt-6 pt-6 border-t border-gray-100"><h3 className="text-base font-semibold text-gray-900 mb-4">Building Details</h3><dl className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5">{buildingRows.map(([label, value]) => (<div key={label}><dt className="text-sm text-gray-500">{label}</dt><dd className="font-semibold text-gray-900">{value}</dd></div>))}</dl></div>)}{features.length > 0 && (<div className="mt-6 pt-6 border-t border-gray-100"><h3 className="text-base font-semibold text-gray-900 mb-3">Features</h3><ul className="grid grid-cols-2 sm:grid-cols-3 gap-2">{features.map((f) => (<li key={f} className="flex items-center gap-2 text-sm text-gray-700"><svg className="w-4 h-4 text-primary-700 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>{getFeatureLabel(f)}</li>))}</ul></div>)}
           </div>
         </div>
 
@@ -264,11 +264,11 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                   className="w-14 h-14 rounded-full bg-primary-100 text-primary-700 font-bold text-lg flex items-center justify-center flex-shrink-0"
                   aria-hidden="true"
                 >
-                  {initials}
+                  {property.user.avatarUrl ? <img src={property.user.avatarUrl} alt="" className="w-full h-full rounded-full object-cover" /> : initials}
                 </div>
                 <div className="min-w-0">
                   <p className="font-semibold text-gray-900 truncate">{contactName}</p>
-                  <p className="text-sm text-gray-500">Listing contact</p>
+                  <p className="text-sm text-gray-500">{property.user.accountType === "AGENT" ? "Real estate agent" : property.user.accountType === "AGENCY" ? "Real estate agency" : "Property owner"}</p>{property.user.agencyName && <p className="text-sm font-medium text-primary-700 truncate">{property.user.agencyName}</p>}
                 </div>
               </div>
 

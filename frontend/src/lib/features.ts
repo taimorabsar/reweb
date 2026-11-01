@@ -14,3 +14,14 @@ export const FEATURE_OPTIONS: { value: string; label: string }[] = [
 export function getFeatureLabel(code: string): string {
   return FEATURE_OPTIONS.find((f) => f.value === code)?.label ?? code;
 }
+
+export const FURNISHING_LABELS: Record<string, string> = {
+  FURNISHED: "Furnished",
+  SEMI_FURNISHED: "Semi-furnished",
+  UNFURNISHED: "Unfurnished",
+};
+
+export const POSSESSION_LABELS: Record<string, string> = {
+  READY: "Ready to move",
+  UNDER_CONSTRUCTION: "Under construction",
+};
