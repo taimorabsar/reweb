@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; import CitySelect from "@/components/CitySelect";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { api } from "@/lib/api";
@@ -231,11 +231,10 @@ export default function EditPropertyPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
-              <input
-                type="text"
+              <CitySelect
                 value={form.city}
-                onChange={(e) => updateForm("city", e.target.value)}
-                className="input-field"
+                onChange={(v) => updateForm("city", v)}
+                emptyLabel="Select city"
               />
             </div>
             <div>

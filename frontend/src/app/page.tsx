@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent } from "react"; import CitySelect from "@/components/CitySelect";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { Property } from "@/types";
@@ -73,13 +73,12 @@ export default function HomePage() {
               <label htmlFor="hero-city" className="sr-only">
                 City
               </label>
-              <input
+              <CitySelect
                 id="hero-city"
-                type="text"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="City, e.g. Lahore"
-                className="input-field h-12 text-base text-gray-900"
+                onChange={setCity}
+                emptyLabel="All cities"
+                className="input-field h-12 text-base text-gray-900 bg-white"
               />
             </div>
             <div className="flex-1">

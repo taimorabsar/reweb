@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState } from "react"; import CitySelect from "@/components/CitySelect";
 import { PropertySearchParams, PropertyType } from "@/types";
 
 interface SearchFiltersProps {
@@ -80,13 +80,10 @@ export default function SearchFilters({ onSearch, initialParams = {} }: SearchFi
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
         <div className="sm:col-span-2 lg:col-span-1">
           <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-          <input
-            type="text"
-            placeholder="Search city..."
+          <CitySelect
             value={filters.city || ""}
-            onChange={(e) => updateFilter("city", e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+            onChange={(v) => updateFilter("city", v)}
+            emptyLabel="All cities"
           />
         </div>
 

@@ -71,7 +71,7 @@ function PropertiesContent() {
         </p>
       </div>
 
-      <SearchFilters onSearch={handleSearch} initialParams={currentParams} />
+      <SearchFilters key={JSON.stringify(currentParams)} onSearch={handleSearch} initialParams={currentParams} />
 
       <div className="mt-8">
         {loading ? (
