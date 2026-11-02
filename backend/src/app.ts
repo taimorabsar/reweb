@@ -11,7 +11,7 @@ import authRoutes from "./modules/auth/auth.routes";
 import propertyRoutes from "./modules/property/property.routes";
 import inquiryRoutes from "./modules/inquiry/inquiry.routes";
 import uploadRoutes from "./modules/upload/upload.routes";
-import replyRoutes from "./modules/reply/reply.routes";
+import replyRoutes from "./modules/reply/reply.routes"; import favoriteRoutes from "./modules/favorite/favorite.routes";
 
 const app = express();
 
@@ -48,7 +48,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/inquiries", inquiryRoutes);
 app.use("/api/upload", uploadRoutes);
-app.use("/api/replies", replyRoutes);
+app.use("/api/replies", replyRoutes); app.use("/api", favoriteRoutes);
 
 app.use(errorHandler);
 
