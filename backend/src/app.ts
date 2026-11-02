@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+import cors from "cors"; import path from "path";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
@@ -19,7 +19,7 @@ app.use(helmet());
 app.use(cors({ origin: env.FRONTEND_URL, credentials: true }));
 app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); app.use("/uploads", (_req, res, next) => { res.setHeader("Cross-Origin-Resource-Policy", "cross-origin"); next(); }, express.static(path.join(process.cwd(), "uploads")));
 
 const globalRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

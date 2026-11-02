@@ -1,12 +1,21 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { promises as fs } from "fs";
+import path from "path";
 import { v4 as uuidv4 } from "uuid";
-import { s3Client, S3_BUCKET } from "../../config/s3";
 import { env } from "../../config/env";
 import { BadRequestError } from "../../utils/errors";
 
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+// Local-disk storage for development. Photos are saved in backend/uploads/properties
+// and served by the API at /uploads/... Switch to cloud storage before launch.
+const ALLOWED_TYPES: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MAX_FILES = 10;
+const UPLOAD_DIR = path.join(process.cwd(), "uploads", "properties");
+const PUBLIC_URL = (process.env.PUBLIC_URL || `http://localhost:${env.PORT}`).replace(/\/$/, "");
 
 interface UploadResult {
   url: string;
@@ -16,9 +25,10 @@ interface UploadResult {
 export async function uploadFile(
   file: Express.Multer.File
 ): Promise<UploadResult> {
-  if (!ALLOWED_TYPES.includes(file.mimetype)) {
+  const ext = ALLOWED_TYPES[file.mimetype];
+  if (!ext) {
     throw new BadRequestError(
-      `Invalid file type: ${file.mimetype}. Allowed: ${ALLOWED_TYPES.join(", ")}`
+      `Invalid file type: ${file.mimetype}. Allowed: ${Object.keys(ALLOWED_TYPES).join(", ")}`
     );
   }
 
@@ -26,21 +36,12 @@ export async function uploadFile(
     throw new BadRequestError(`File exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit`);
   }
 
-  const ext = file.originalname.includes(".")
-    ? file.originalname.split(".").pop() || "bin"
-    : "bin";
-  const key = `properties/${uuidv4()}.${ext}`;
+  const fileName = `${uuidv4()}.${ext}`;
+  await fs.mkdir(UPLOAD_DIR, { recursive: true });
+  await fs.writeFile(path.join(UPLOAD_DIR, fileName), file.buffer);
 
-  const command = new PutObjectCommand({
-    Bucket: S3_BUCKET,
-    Key: key,
-    Body: file.buffer,
-    ContentType: file.mimetype,
-  });
-
-  await s3Client.send(command);
-
-  const url = `https://${S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${key}`;
+  const key = `properties/${fileName}`;
+  const url = `${PUBLIC_URL}/uploads/${key}`;
 
   return { url, key };
 }
