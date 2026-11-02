@@ -1,13 +1,13 @@
 "use client";
 
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "@/lib/auth-context";
+import { AuthProvider } from "@/lib/auth-context"; import { FavoritesProvider } from "@/lib/favorites-context";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
+    <AuthProvider><FavoritesProvider>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -22,6 +22,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
-    </AuthProvider>
+    </FavoritesProvider></AuthProvider>
   );
 }

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${property.title} in ${property.locality}, ${property.city} | RealEstate`;
-  const description = `${property.title} - ${property.bedrooms} BHK ${property.propertyType.toLowerCase()} in ${property.locality}, ${property.city}. ${property.description.slice(0, 150)}...`;
+  const description = `${property.title} - ${property.bedrooms > 0 ? `${property.bedrooms} bedroom ` : ""}${property.propertyType.toLowerCase()} in ${property.locality}, ${property.city}. ${property.description.slice(0, 150)}...`;
 
   return {
     title,

@@ -280,7 +280,7 @@ export default function EditPropertyPage() {
               </select>
             </div>
             <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Area (sq.ft.) *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Area (sq ft) *</label>
               <input
                 type="number"
                 value={form.areaSqFt}

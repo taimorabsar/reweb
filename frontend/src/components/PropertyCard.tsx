@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Property } from "@/types";
 import { formatPrice, getPropertyTypeLabel, getPurposeLabel } from "@/lib/utils";
 import PropertyStats from "@/components/PropertyStats";
-import TimeAgo from "@/components/TimeAgo";
+import TimeAgo from "@/components/TimeAgo"; import FavoriteButton from "@/components/FavoriteButton";
 
 interface PropertyCardProps {
   property: Property;
@@ -32,13 +32,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             </span>
           </div>
           {property.status !== "ACTIVE" && (
-            <div className="absolute top-3 right-3">
+            <div className="absolute top-3 right-14">
               <span className="bg-accent-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                 {property.status}
               </span>
             </div>
           )}
-          {property.isInvestment && (
+          <FavoriteButton propertyId={property.id} className="absolute top-3 right-3" />{property.isInvestment && (
             <div className="absolute bottom-3 left-3">
               <span className="bg-accent-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
                 Investment

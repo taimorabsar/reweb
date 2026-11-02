@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { href: "/properties?purpose=SALE", label: "Buy" },
   { href: "/properties?purpose=RENT", label: "Rent" },
   { href: "/properties?investment=true", label: "Invest" },
-  { href: "/properties", label: "Properties" },
+  { href: "/properties", label: "Properties" }, { href: "/saved", label: "Saved" },
 ];
 
 export default function Navbar() {

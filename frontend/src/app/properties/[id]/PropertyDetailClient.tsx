@@ -10,7 +10,7 @@ import { formatPrice, formatArea, formatDate, getPropertyTypeLabel, getPurposeLa
 import PropertyCard from "@/components/PropertyCard";
 import InquiryForm from "@/components/InquiryForm";
 import PropertyStats from "@/components/PropertyStats";
-import TimeAgo from "@/components/TimeAgo";
+import TimeAgo from "@/components/TimeAgo"; import FavoriteButton from "@/components/FavoriteButton";
 
 interface PropertyDetailClientProps {
   property: Property;
@@ -204,7 +204,7 @@ export default function PropertyDetailClient({ property }: PropertyDetailClientP
                 >
                   Directions
                 </a>
-                <button type="button" onClick={handleShare} className="btn-secondary !px-4 !py-2">
+                <FavoriteButton propertyId={property.id} variant="labeled" /><button type="button" onClick={handleShare} className="btn-secondary !px-4 !py-2">
                   Share
                 </button>
                 <button type="button" onClick={handleWhatsAppShare} className="btn-secondary !px-4 !py-2">

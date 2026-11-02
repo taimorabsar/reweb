@@ -203,8 +203,8 @@ function PropertiesTab({
             </div>
             <div className="flex items-center gap-3 sm:gap-4 mt-2 text-sm text-gray-500 flex-wrap">
               <span>{getPropertyTypeLabel(property.propertyType)}</span>
-              <span>{property.bedrooms} BHK</span>
-              <span>{property.areaSqFt} sq.ft.</span>
+              {property.bedrooms > 0 && <span>{property.bedrooms} bed</span>}
+              <span>{property.areaSqFt.toLocaleString("en-PK")} sq ft</span>
               <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                 property.status === "ACTIVE"
                   ? "bg-green-100 text-green-700"
