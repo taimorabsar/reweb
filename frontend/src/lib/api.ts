@@ -135,7 +135,7 @@ class ApiClient {
     this.logout();
   }
 
-  async getProfile() {
+  async updateProfile(data: { name?: string; phone?: string; accountType?: "OWNER" | "AGENT" | "AGENCY"; agencyName?: string; avatarUrl?: string }) { const res = await this.request<ApiResponse<User>>("/api/auth/profile", { method: "PUT", body: JSON.stringify(data) }); return res.data; } async getProfile() {
     const res = await this.request<ApiResponse<User>>("/api/auth/profile");
     return res.data;
   }

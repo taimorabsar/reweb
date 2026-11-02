@@ -61,7 +61,7 @@ export default function Navbar() {
                   + Add Property
                 </Link>
                 <div className="flex items-center space-x-3 pl-3 border-l border-gray-200">
-                  <span className="text-sm text-gray-500">{user.name}</span>
+                  <Link href="/dashboard/profile" className="text-sm text-gray-500 hover:text-primary-600 transition-colors">{user.name}</Link>
                   <button
                     onClick={logout}
                     className="text-sm text-gray-500 hover:text-red-600 transition-colors"
