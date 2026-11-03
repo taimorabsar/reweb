@@ -1,9 +1,12 @@
 "use client";
 
 import { Suspense, useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 import { Property, PropertySearchParams } from "@/types";
+import { cleanSearchParams, describeSearch } from "@/lib/saved-searches";
 import PropertyCard from "@/components/PropertyCard";
 import PropertyCardSkeleton from "@/components/PropertyCardSkeleton";
 import SearchFilters from "@/components/SearchFilters";
@@ -17,6 +20,8 @@ const SORT_OPTIONS = [
 
 function PropertiesContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user } = useAuth();
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -57,6 +62,12 @@ function PropertiesContent() {
     const purpose = searchParams.get("purpose");
     initialParams.purpose = purpose === "RENT" ? "RENT" : "SALE";
     if (searchParams.get("investment") === "true") initialParams.investment = "true";
+    const minPrice = Number(searchParams.get("minPrice"));
+    if (minPrice > 0) initialParams.minPrice = minPrice;
+    const maxPrice = Number(searchParams.get("maxPrice"));
+    if (maxPrice > 0) initialParams.maxPrice = maxPrice;
+    const bedrooms = Number(searchParams.get("bedrooms"));
+    if (bedrooms > 0) initialParams.bedrooms = bedrooms;
     const sort = searchParams.get("sort");
     if (sort) initialParams.sort = sort;
     setCurrentParams(initialParams);
@@ -70,6 +81,23 @@ function PropertiesContent() {
 
   const handleSortChange = (sort: string) => {
     handleSearch({ ...currentParams, sort });
+  };
+
+  const handleSaveSearch = async () => {
+    if (!user) {
+      toast("Log in to save searches");
+      router.push("/login");
+      return;
+    }
+    const params = cleanSearchParams(currentParams);
+    const name = window.prompt("Name this search", describeSearch(params).slice(0, 80));
+    if (!name || !name.trim()) return;
+    try {
+      await api.createSavedSearch({ name: name.trim().slice(0, 80), params });
+      toast.success("Search saved. Find it under Saved.");
+    } catch (error) {
+      toast.error((error as Error).message || "Could not save this search");
+    }
   };
 
   const loadMore = () => {
@@ -87,9 +115,14 @@ function PropertiesContent() {
       <SearchFilters key={JSON.stringify(currentParams)} onSearch={handleSearch} initialParams={currentParams} />
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-lg font-semibold text-gray-900">
-          Results: {loading ? "..." : `${total.toLocaleString("en-PK")} ${total === 1 ? "Listing" : "Listings"}`}
-        </p>
+        <div className="flex flex-wrap items-center gap-4">
+          <p className="text-lg font-semibold text-gray-900">
+            Results: {loading ? "..." : `${total.toLocaleString("en-PK")} ${total === 1 ? "Listing" : "Listings"}`}
+          </p>
+          <button type="button" onClick={handleSaveSearch} className="btn-secondary !px-4 !py-2">
+            Save search
+          </button>
+        </div>
         <div className="flex items-center gap-2">
           <label htmlFor="sort-by" className="text-sm font-medium text-gray-700">
             Sort By

@@ -109,3 +109,10 @@ export interface UploadResult {
   url: string;
   key: string;
 }
+
+export interface SavedSearch {
+  id: string;
+  name: string;
+  params: PropertySearchParams;
+  createdAt: string;
+}

@@ -1,4 +1,4 @@
-import { ApiResponse, PaginatedResponse, AuthResponse, Property, PropertySearchParams, Inquiry, Reply, User, UploadResult } from "@/types";
+import { ApiResponse, PaginatedResponse, AuthResponse, Property, PropertySearchParams, Inquiry, Reply, User, UploadResult, SavedSearch } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -135,7 +135,7 @@ class ApiClient {
     this.logout();
   }
 
-  async updateProfile(data: { name?: string; phone?: string; accountType?: "OWNER" | "AGENT" | "AGENCY"; agencyName?: string; avatarUrl?: string }) { const res = await this.request<ApiResponse<User>>("/api/auth/profile", { method: "PUT", body: JSON.stringify(data) }); return res.data; } async getFavoriteIds() { const res = await this.request<ApiResponse<string[]>>("/api/favorites/ids"); return res.data; } async getFavorites() { const res = await this.request<ApiResponse<Property[]>>("/api/favorites"); return res.data; } async addFavorite(propertyId: string) { await this.request<ApiResponse<{ propertyId: string }>>(`/api/favorites/${propertyId}`, { method: "POST" }); } async removeFavorite(propertyId: string) { await this.request<ApiResponse<{ propertyId: string }>>(`/api/favorites/${propertyId}`, { method: "DELETE" }); } async getProfile() {
+  async updateProfile(data: { name?: string; phone?: string; accountType?: "OWNER" | "AGENT" | "AGENCY"; agencyName?: string; avatarUrl?: string }) { const res = await this.request<ApiResponse<User>>("/api/auth/profile", { method: "PUT", body: JSON.stringify(data) }); return res.data; } async getFavoriteIds() { const res = await this.request<ApiResponse<string[]>>("/api/favorites/ids"); return res.data; } async getFavorites() { const res = await this.request<ApiResponse<Property[]>>("/api/favorites"); return res.data; } async addFavorite(propertyId: string) { await this.request<ApiResponse<{ propertyId: string }>>(`/api/favorites/${propertyId}`, { method: "POST" }); } async removeFavorite(propertyId: string) { await this.request<ApiResponse<{ propertyId: string }>>(`/api/favorites/${propertyId}`, { method: "DELETE" }); } async getSavedSearches() { const res = await this.request<ApiResponse<SavedSearch[]>>("/api/saved-searches"); return res.data; } async createSavedSearch(data: { name: string; params: PropertySearchParams }) { const res = await this.request<ApiResponse<SavedSearch>>("/api/saved-searches", { method: "POST", body: JSON.stringify(data) }); return res.data; } async deleteSavedSearch(id: string) { await this.request<ApiResponse<{ id: string }>>(`/api/saved-searches/${id}`, { method: "DELETE" }); } async getProfile() {
     const res = await this.request<ApiResponse<User>>("/api/auth/profile");
     return res.data;
   }
